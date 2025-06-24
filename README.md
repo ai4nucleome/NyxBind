@@ -30,10 +30,12 @@ pip install --file requirements.txt
 You can load the pretrained NyxBind model from Hugging Face:
 
 ```python
-from transformers import AutoModel, AutoTokenizer
+from transformers import AutoTokenizer, AutoModel
+from transformers.models.bert.configuration_bert import BertConfig
 
-model = AutoModel.from_pretrained("ai4nucleome/NyxBind")
-tokenizer = AutoTokenizer.from_pretrained("ai4nucleome/NyxBind")
+config = BertConfig.from_pretrained("CompBioDSA/NyxBind")
+tokenizer = AutoTokenizer.from_pretrained("CompBioDSA/NyxBind", trust_remote_code=True)
+model = AutoModel.from_pretrained("CompBioDSA/NyxBind", trust_remote_code=True, config=config)
 ```
 
 ---
