@@ -6,29 +6,29 @@ NyxBind is a high-performance pre-trained model for transcription factor binding
 
 # Table of Contents
 
-- [NyxBind](#🧬-nyxbind)
+- [NyxBind](#nyxbind)
 - [1. Environment Setup](#1-environment-setup)
   - [1.1 Create and Activate Virtual Environment](#11-create-and-activate-virtual-environment)
   - [1.2 Install the Package and Dependencies](#12-install-the-package-and-dependencies)
-- [2. Download NyxBind (Pretrained, Not Fine-tuned)](#🚀2-download-nyxbind-pretrained-not-fine-tuned)
-- [3. Dataset Structure](#📁-3-dataset-structure)
-- [4. Fine-tuning on Downstream Tasks](#🛠️-4-fine-tuning-on-downstream-tasks)
+- [2. Download NyxBind (Pretrained, Not Fine-tuned)](#2-download-nyxbind-pretrained-not-fine-tuned)
+- [3. Dataset Structure](#3-dataset-structure)
+- [4. Fine-tuning on Downstream Tasks](#4-fine-tuning-on-downstream-tasks)
   - [4.1 Full-Parameter Fine-tuning](#41-full-parameter-fine-tuning)
   - [4.2 LoRA Fine-tuning](#42-lora-fine-tuning)
-- [5. Motif Visualization and Extraction](#🔍-5-motif-visualization-and-extraction)
+- [5. Motif Visualization and Extraction](#5-motif-visualization-and-extraction)
   - [5.1 Extract attention score](#51-extract-attention-score)
   - [5.2 Extracting Motifs](#52-extracting-motifs)
   - [5.3 TomTom Comparison](#53-tomtom-comparison)
   - [5.4 Other Baseline Models for Motif Visualization](#54-other-baseline-models-for-motif-visualization)
 - [6. Contrastive Learning](#6-contrastive-learning)
-  - [6.1 Data Availability](#data-availability)
-  - [6.2 Running Contrastive Learning](#running-contrastive-learning)
+  - [6.1 Data Availability](#61-data-availability)
+  - [6.2 Running Contrastive Learning](#62-running-contrastive-learning)
 - [7. Benchmark](#7-benchmark)
   - [7.1 Models](#71-models)
   - [7.2 BERT-TFBS & BERT-TFBS_N](#72-bert-tfbs--bert-tfbs_n)
   - [7.3 DeepBind & DanQ](#73-deepbind--danq)
   - [7.4 NT Series](#74-nt-series)
-- [📌 Notes](#📌-notes)
+- [Notes](#notes)
 
 ## 1. Environment Setup
 
