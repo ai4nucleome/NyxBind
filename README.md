@@ -377,15 +377,95 @@ python cl.py \
 - `start_layer`: Specifies the starting encoder layer for contrastive learning.  
   For example, if set to `10`, it will extract embeddings from layers 10 and 11 and perform mean pooling for contrastive learning.
 
+## 7. Benchmark
+
+### 7.1 Models
+
+The `evaluation/` directory includes benchmark pipelines for testing the performance of different TFBS prediction models under a unified evaluation framework.
+
+```
+evaluation/
+├── bert-tfbs/         # BERT-TFBS evaluation scripts
+│   ├── CBAM.py        # Convolutional Block Attention Module for enhancing BERT features
+│   ├── train.py       # Training script for BERT-TFBS and BERT-TFBS_N
+│   └── train.sh       # Shell script to run the training pipeline
+│
+├── cnn/               # CNN-based baseline models
+│   ├── cnn.py         # Simple CNN model for TFBS prediction
+│   ├── DanQ.py        # RNN-CNN hybrid model (DanQ architecture)
+│   ├── DeepBind.py    # Classic DeepBind model
+│   └── cnn.sh         # Shell script to train and evaluate CNN baselines
+│
+└── nt/                # Evaluation with Nucleotide Transformer models
+    ├── train.py       # Training or feature extraction using NT models
+    └── nt.sh          # Shell script to evaluate with NT models
+```
+
+---
+
+### 7.2 BERT-TFBS & BERT-TFBS_N
+
+To train **BERT-TFBS** or **BERT-TFBS_N**, simply run:
+
+```bash
+./evaluation/bert-tfbs/train.sh
+```
+
+You can switch between the pretrained models by modifying the `model_path` variable in the script:
+
+```bash
+# BERT-TFBS_N: uses NyxBind as the base model
+model_path='../../cl/output/NyxBind'
+
+# BERT-TFBS: uses DNABERT2 as the base model
+model_path='../../model/DNABERT-2-117M'
+```
+
+---
+
+### 7.3 DeepBind & DanQ
+
+We sincerely thank the **DeepSTF** team for providing a PyTorch version of these models on GitHub.
+
+To train **DeepBind** or **DanQ**, execute:
+
+```bash
+./evaluation/cnn/cnn.sh
+```
+
+You can switch the model being used by modifying the `model_name` variable in the script:
+
+```bash
+model_name='DeepBind'  # Options: 'DeepBind' or 'DanQ'
+```
+
+---
+
+### 7.4 NT Series
+
+To evaluate the **Nucleotide Transformer** (NT) series, run:
+
+```bash
+./evaluation/nt/nt.sh
+```
+
+You can specify which NT model to use by passing an index as an argument:
+
+```bash
+bash nt.sh 0   # nucleotide-transformer-v2-500m-multi-species
+bash nt.sh 1   # nucleotide-transformer-500m-human-ref
+bash nt.sh 2   # nucleotide-transformer-2.5b-1000g
+bash nt.sh 3   # nucleotide-transformer-2.5b-multi-species
+```
+
+Make sure the corresponding pretrained models are downloaded and accessible via the appropriate paths in the script.
+
+---
+
+### 📌 Notes
+
+- All models share a consistent data format for training and evaluation.
+- Metrics include ROC-AUC, PR-AUC, accuracy, precision, recall, and F1-score.
+- Motif visualization results (if applicable) will be saved in each model’s respective `output/` directory.
 
 
-
-
-
-
-
-
-
-
-
-    
