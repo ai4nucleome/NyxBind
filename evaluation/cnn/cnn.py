@@ -50,7 +50,7 @@ class TrainingArguments(transformers.TrainingArguments):
     save_steps: int = field(default=100)
     eval_steps: int = field(default=100)
     eval_strategy: str = field(default="steps"),  # or "epoch"
-    warmup_steps: int = field(default=50)
+    warmup_steps: int = field(default=30)
     weight_decay: float = field(default=0.01)
     learning_rate: float = field(default=1e-4)
     save_total_limit: int = field(default=2)
