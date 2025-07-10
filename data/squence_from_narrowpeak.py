@@ -6,19 +6,20 @@ import bisect
 import csv
 import pdb
 
-input_folder = 'path/to/your/input/folder'  # Replace with actual input folder path
-save_folder = 'path/to/your/output/folder'  # Replace with actual output folder path
-ref = 'path/to/hg19.fasta'  # Replace with actual reference genome path
+input_folder = 'path/to/your/input/bedfolder'  # Replace with the actual input folder path
+save_folder = 'path/to/your/output/folder'     # Replace with the actual output folder path
+ref = 'path/to/hg19.fasta'                     # Replace with the actual reference genome path
 
 # Initialize dictionaries to store chromosome sequences and genome ranges
 chromosome_sequences = {}
 genome_ranges = {}
 
 def load_reference_genome(path):
-    # Parse FASTA file at the given path
+    # Iterate through the FASTA file at the given path
     for record in SeqIO.parse(path, "fasta"):
         chromosome_name = record.id
         print(chromosome_name)
+
         sequence = str(record.seq)
         chromosome_sequences[chromosome_name] = sequence
         genome_ranges[chromosome_name] = len(sequence)
@@ -27,7 +28,7 @@ def load_reference_genome(path):
 # Load sequence information
 chromosome_sequences, genome_ranges = load_reference_genome(ref)
 
-# Retrieve TFBS location from BED file
+# Parse TFBS positions from BED file
 def get_tfbs_location(path):
     allowed_chromosomes = {f'chr{i}' for i in range(1, 23)} | {'chrX', 'chrY'}
     tfbs_by_chr = defaultdict(list)
@@ -50,6 +51,7 @@ def get_tfbs_location(path):
                 tfbs_by_chr[chr_name].append((start, end))
 
         sorted_tfbs_by_chr = {}
+
         for chr_name, intervals in tfbs_by_chr.items():
             sorted_intervals = sorted(intervals)
             sorted_tfbs_by_chr[chr_name] = sorted_intervals
@@ -69,7 +71,7 @@ def get_tfbs_location(path):
 
     return tfbs_by_chr, chr_tfbs_counts
 
-# Compute GC percentage
+# Compute GC content percentage
 def gc_content(dna_sequence):
     g_count = dna_sequence.count('G')
     c_count = dna_sequence.count('C')
@@ -79,7 +81,7 @@ def gc_content(dna_sequence):
     gc_percentage = int(((g_count + c_count) / total_bases) * 100)
     return gc_percentage
 
-# Generate non-TFBS regions by avoiding overlap
+# Generate non-TFBS regions avoiding overlap
 def generate_non_tfbs(tfbs_by_chr, genome_ranges, chr_tfbs_counts):
     non_tfbs_sequences = {}
 
@@ -100,7 +102,7 @@ def generate_non_tfbs(tfbs_by_chr, genome_ranges, chr_tfbs_counts):
         print(f'{chr_name} length: {chr_length}, tfbs count: {counts}')
 
         while len(non_tfbs_sequences[chr_name]) < max_required_counts:
-            start = random.randint(0, chr_length - 100)
+            start = random.randint(0, chr_length - 101)
             end = start + 101
 
             overlap = False
@@ -118,7 +120,7 @@ def generate_non_tfbs(tfbs_by_chr, genome_ranges, chr_tfbs_counts):
 # Generate TFBS sequences centered around midpoint
 def generate_tfbs(tfbs_by_chr):
     tfbs_sequences = {}
-    print("Start generating TFBS index")
+    print("Start generating TFBS sequence index")
     for chr_name, lines in tfbs_by_chr.items():
         tfbs_sequences[chr_name] = []
         for line in lines:
@@ -126,10 +128,11 @@ def generate_tfbs(tfbs_by_chr):
             end = line[1]
             middle = (start + end) // 2
             tfbs_sequences[chr_name].append((middle - 50, middle + 51))
-    print("Completed generating TFBS index")
+
+    print("Finished generating TFBS sequence index")
     return tfbs_sequences
 
-# Extract sequence pairs with GC-content matching
+# Extract and pair TFBS and non-TFBS sequences with matched GC content
 def get_pairs(tfbs_sequences, non_tfbs_sequences):
     data = {}
     tfbs_seqs = defaultdict(list)
@@ -143,7 +146,8 @@ def get_pairs(tfbs_sequences, non_tfbs_sequences):
             gc_percentage = gc_content(extracted_seq)
             if all(nucleotide in 'ATCG' for nucleotide in extracted_seq):
                 tfbs_seqs[chr_name].append((extracted_seq, gc_percentage))
-        print(f'{chr_name} has {len(tfbs_seqs[chr_name])} TFBS sequences')
+
+        print(f'Chromosome {chr_name} has {len(tfbs_seqs[chr_name])} TFBS sequences')
 
     for chr_name, seq_indices in non_tfbs_sequences.items():
         chrom_seq = chromosome_sequences[chr_name]
@@ -152,7 +156,8 @@ def get_pairs(tfbs_sequences, non_tfbs_sequences):
             gc_percentage = gc_content(extracted_seq)
             if all(nucleotide in 'ATCG' for nucleotide in extracted_seq):
                 non_tfbs_seqs[chr_name].append((extracted_seq, gc_percentage))
-        print(f'{chr_name} has {len(non_tfbs_seqs[chr_name])} non-TFBS sequences')
+
+        print(f'Chromosome {chr_name} has {len(non_tfbs_seqs[chr_name])} non-TFBS sequences')
 
     print("Start pairing TFBS and non-TFBS sequences")
 
@@ -178,15 +183,14 @@ def get_pairs(tfbs_sequences, non_tfbs_sequences):
                         data[chr_name] = []
                     data[chr_name].append((tfbs_seq, 1))
                     seen_sequences.add((tfbs_seq, 1))
-
                 if (selected_non_tfbs, 0) not in seen_sequences:
                     data[chr_name].append((selected_non_tfbs, 0))
                     seen_sequences.add((selected_non_tfbs, 0))
 
-    print("Completed pairing TFBS and non-TFBS sequences")
+    print("Finished pairing TFBS and non-TFBS sequences")
     return data
 
-# Save the dataset to CSV
+# Save sequences and labels to CSV
 def save_files(csv_file, data):
     file_exists = os.path.isfile(csv_file) and os.path.getsize(csv_file) > 0
 
@@ -197,7 +201,7 @@ def save_files(csv_file, data):
         for sequence, label in data:
             writer.writerow([sequence, label])
 
-# Main processing function for each file
+# Process each BED file
 def process_file(filename, input_folder, genome_ranges, save_folder):
     tfbs_file_path = os.path.join(input_folder, filename)
     tfbs_by_chr, chr_tfbs_counts = get_tfbs_location(tfbs_file_path)
@@ -225,14 +229,13 @@ def process_file(filename, input_folder, genome_ranges, save_folder):
         else:
             for seq in seqs:
                 train.append(seq)
-
     save_files(os.path.join(folder, 'train.csv'), train)
     save_files(os.path.join(folder, 'dev.csv'), dev)
     save_files(os.path.join(folder, 'test.csv'), test)
 
-# Loop through all .bed files in input folder
+# Iterate through all BED files in input folder
 for filename in os.listdir(input_folder):
-    print(f'Processing file {filename}')
+    print(f'Start processing file {filename}')
     name, extension = os.path.splitext(filename)
     if extension == '.bed': 
         process_file(filename, input_folder, genome_ranges, save_folder)
