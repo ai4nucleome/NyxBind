@@ -46,7 +46,7 @@ conda activate nyxbind
 ```bash
 git clone https://github.com/ai4nucleome/NyxBind.git
 cd NyxBind
-pip install --file requirements.txt
+pip install -r requirements.txt
 ```
 
 ---
