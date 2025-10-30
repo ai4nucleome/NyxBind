@@ -20,7 +20,5 @@ python cl.py \
   --learning_rate 3e-5 \
   --base_path $BASE_PATH \
   --model_name_or_path $BASE_MODEL \
-  --train_numbers 10000 \
-  --test_numbers 1000 \
   --start_layer 11\
   --model_save_root "output/NyxBind"
