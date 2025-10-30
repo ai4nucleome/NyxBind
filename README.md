@@ -1,6 +1,6 @@
 # NyxBind🧬
 
-NyxBind is a high-performance pre-trained model for transcription factor binding site (TFBS) prediction. It is built upon DNABERT2 with additional contrastive learning to enhance sequence representation for regulatory genomics.
+NyxBind is a high-performance pre-trained model for transcription factor binding site (TFBS) prediction. It is built upon a pretrain genome foundation model with additional contrastive learning to enhance sequence representation for regulatory genomics.
 
 ## Model Architecture
 
@@ -60,7 +60,8 @@ pip install -r requirements.txt
 
 ---
 
-## 2. Download NyxBind (Pretrained, Not Fine-tuned)🚀
+## 2. Download 
+### 2.1 Download NyxBind (Pretrained, Not Fine-tuned)🚀
 
 You can load the pretrained NyxBind model from Hugging Face:
 
@@ -72,6 +73,8 @@ config = BertConfig.from_pretrained("CompBioDSA/NyxBind")
 tokenizer = AutoTokenizer.from_pretrained("CompBioDSA/NyxBind", trust_remote_code=True)
 model = AutoModel.from_pretrained("CompBioDSA/NyxBind", trust_remote_code=True, config=config)
 ```
+### 2.2 Download data for contrastive learning
+https://drive.google.com/file/d/1lHscT-jg3Y-r68YmgbDUo4v9r6L3lyVR/view?usp=sharing
 
 ---
 
@@ -476,7 +479,7 @@ This script executes the following command:
 python cl.py \
   --train_batch_size 128 \
   --eval_batch_size 128 \
-  --num_epochs 1 \
+  --num_epochs 3 \
   --max_seq_length 30 \
   --random_seed 42 \
   --learning_rate 3e-5 \
