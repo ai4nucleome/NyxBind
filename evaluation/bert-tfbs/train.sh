@@ -5,7 +5,7 @@ export TOKENIZERS_PARALLELISM=False
 export WANDB_DISABLED=True
 
 data_path=../../data/1
-lr=3e-5
+lr=1.5e-5
 
 #BERT-TFBS_N: using NyxBind as basemodel
 #BERT-TFBS: using DNABERT2 as basemodel
