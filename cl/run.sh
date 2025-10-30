@@ -21,4 +21,5 @@ python cl.py \
   --base_path $BASE_PATH \
   --model_name_or_path $BASE_MODEL \
   --start_layer 11\
+  --loss SMNRL \
   --model_save_root "output/NyxBind"
