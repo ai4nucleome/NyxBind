@@ -5,8 +5,8 @@ export CUDA_VISIBLE_DEVICES=0
 export TOKENIZERS_PARALLELISM=False
 export WANDB_DISABLED=False
 
-#data
-BASE_PATH="../data/159chipseq"
+#path for pretrain data folder
+BASE_PATH=" "
 
 #pretrain dnabert2
 BASE_MODEL="./model/DNABERT-2-117M"
