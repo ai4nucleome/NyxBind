@@ -74,8 +74,8 @@ tokenizer = AutoTokenizer.from_pretrained("CompBioDSA/NyxBind", trust_remote_cod
 model = AutoModel.from_pretrained("CompBioDSA/NyxBind", trust_remote_code=True, config=config)
 ```
 ### 2.2 Download data for contrastive learning
-https://drive.google.com/file/d/1lHscT-jg3Y-r68YmgbDUo4v9r6L3lyVR/view?usp=sharing
-
+[https://drive.google.com/file/d/1lHscT-jg3Y-r68YmgbDUo4v9r6L3lyVR/view?usp=sharing
+](https://drive.google.com/file/d/1r49V7DwO4xgB8fa4MfftEszpYGjXUuR8/view?usp=sharing)
 ---
 
 ## 3. Dataset Structure📁
